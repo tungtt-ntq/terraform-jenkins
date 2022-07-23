@@ -7,7 +7,7 @@ pipeline{
         choice(
             choices: ['Apply', 'Delete'], 
             name: 'option'
-        ),
+        )
     }
     stages{
         stage("Terraform checking"){
