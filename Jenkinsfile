@@ -4,15 +4,17 @@ pipeline{
           terraform 'terraform'
     }
     parameters {
-        string(name: 'apply', defaultValue: '1')
-        string(name: 'delete', defaultValue: '1')
+        choice(
+            choices: ['Apply', 'Delete'], 
+            name: 'option'
+        ),
     }
     stages{
         stage("Terraform checking"){
+            when {
+                 expression { return params.option == 'Apply'}
+            }
             steps{
-                when {
-                    expression { return params.apply == '1'}
-                }
                 echo "========Start checking Terraform========"
                 withCredentials([aws(credentialsId: 'aws-credentials')]) {
                     sh 'terraform --version'
@@ -27,10 +29,10 @@ pipeline{
         }
 
         stage("Terraform delete"){
+            when {
+                expression { return params.option == 'Delete'}
+            }
             steps{
-                when {
-                   expression { return params.delete == '1'}
-                }
                 echo "========Start checking Terraform========"
                 withCredentials([aws(credentialsId: 'aws-credentials')]) {
                     sh 'terraform --version'
