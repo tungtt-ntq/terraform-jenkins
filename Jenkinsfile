@@ -7,7 +7,7 @@ pipeline{
         stage("Terraform checking"){
             steps{
                 echo "========Start checking Terraform========"
-                withCredentials([aws(credentialsId: 'AKIAXAQAXOGRCWJ3VDOF')]) {
+                withCredentials([aws(credentialsId: 'aws-credentials')]) {
                     sh 'terraform --version'
                     sh '''
                         terraform init
