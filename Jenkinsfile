@@ -18,9 +18,8 @@ pipeline{
                 }
             }
         }
-    }
-    
-    stage("Terraform delete"){
+
+        stage("Terraform delete"){
             steps{
                 echo "========Start checking Terraform========"
                 withCredentials([aws(credentialsId: 'aws-credentials')]) {
@@ -34,4 +33,5 @@ pipeline{
                 }
             }
         }
+    }
 }
