@@ -1,5 +1,7 @@
 pipeline{
-    agent any
+    agent {
+        label 'amz-linux'
+    }
     tools {
           terraform 'terraform'
     }
@@ -7,7 +9,13 @@ pipeline{
         stage("Terraform checking"){
             steps{
                 echo "========Start checking Terraform========"
-                sh 'terraform --version'
+                withCredentials([aws(credentialsId: 'AKIAXAQAXOGRCWJ3VDOF')]) {
+                    sh 'terraform --version'
+                    sh '''
+                        terraform init
+                        terraform plan -no-color
+                    '''
+                }
             }
         }
     }
